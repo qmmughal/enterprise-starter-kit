@@ -1,6 +1,6 @@
 # 🏗️ EnterpriseKit — .NET Enterprise Starter Kit
 
-[![CI](https://github.com/your-org/enterprise-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/enterprise-kit/actions/workflows/ci.yml)
+[![CI](https://github.com/qmmughal/enterprise-starter-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/qmmughal/enterprise-starter-kit/actions/workflows/ci.yml)
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -49,7 +49,7 @@ Request → LoggingBehaviour → ValidationBehaviour → TransactionBehaviour �
 ### 1. Clone & spin up infrastructure
 
 ```bash
-git clone https://github.com/your-org/enterprise-kit.git
+git clone https://github.com/qmmughal/enterprise-starter-kit.git
 cd enterprise-kit
 
 docker compose up -d
