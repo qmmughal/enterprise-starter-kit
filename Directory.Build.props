@@ -1,0 +1,29 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>EnterpriseKit</RootNamespace>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.0</Version>
+    <Authors>EnterpriseKit Contributors</Authors>
+    <Company>EnterpriseKit</Company>
+    <Copyright>Copyright © 2025 EnterpriseKit Contributors</Copyright>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <!-- Suppress performance/style suggestions that are addressed in production hardening -->
+    <NoWarn>$(NoWarn);CA1848;CA1305;CA1725;CA1860;CA1711;NU1903</NoWarn>
+    <!-- Analyzer settings -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>Recommended</AnalysisMode>
+  </PropertyGroup>
+
+  <!-- Suppress underscore-in-method-name warning in test projects (xUnit naming convention) -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.UnitTests')) or $(MSBuildProjectName.EndsWith('.Integration.Tests'))">
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+  </PropertyGroup>
+
+</Project>
