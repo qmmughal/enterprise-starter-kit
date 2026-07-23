@@ -5,39 +5,23 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > **.NET 8 LTS track.** For new greenfield work on **.NET 10**, prefer [enterprise-starter-kit-v2](https://github.com/qmmughal/enterprise-starter-kit-v2).
+>
+> Architecture, patterns, and conventions are **identical** between the two kits — Clean Architecture layering, the CQRS/MediatR pipeline, the transactional outbox pattern, and the "adding a new feature" checklist are documented once, in [v2's README](https://github.com/qmmughal/enterprise-starter-kit-v2#readme), rather than duplicated here. This document covers only what you need to run the **.NET 8** build and what differs from v2.
 
-A **production-grade, open-source Enterprise Starter Kit** combining:
-- 🧱 **Clean Architecture** — strict separation of concerns across 4 layers
-- ⚡ **CQRS + MediatR** — commands and queries with a full pipeline
-- 📬 **Transactional Outbox Pattern** — safe domain event delivery
-- 🔐 **ABP Framework** — multi-tenancy, identity, OpenIddict OIDC
-- 📊 **Serilog** — structured JSON logging
-- 🐘 **PostgreSQL** + **Redis** + **MailHog** via Docker Compose
+## What's identical to v2
 
----
+- 🧱 **Clean Architecture** — same 4-layer separation (Domain / Application / Infrastructure / HttpApi)
+- ⚡ **CQRS + MediatR** — same pipeline: `Request → LoggingBehaviour → ValidationBehaviour → TransactionBehaviour → Handler`
+- 📬 **Transactional Outbox Pattern** — same at-least-once delivery guarantee via `OutboxRelayService`
+- 🔐 **ABP Framework** — same multi-tenancy, identity, OpenIddict OIDC setup
+- 📊 **Serilog** — same structured JSON logging
+- 🐘 **PostgreSQL** + **Redis** + **MailHog** via the same Docker Compose stack
 
-## 📐 Architecture
+Full write-up of all of the above, including the architecture diagram and the step-by-step "adding a new feature" checklist: **[read it in the v2 README →](https://github.com/qmmughal/enterprise-starter-kit-v2#readme)**
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│  HttpApi  (Controllers, Middleware, Program.cs)                      │
-│    ↓ sends IRequest via ISender                                      │
-├─────────────────────────────────────────────────────────────────────┤
-│  Application  (Commands, Queries, Validators, Event Handlers)        │
-│    ↓ calls repository interfaces, raises domain events               │
-├─────────────────────────────────────────────────────────────────────┤
-│  Domain  (Aggregates, Value Objects, Events, Repository Interfaces)  │
-│    ← ZERO external dependencies                                       │
-├─────────────────────────────────────────────────────────────────────┤
-│  Infrastructure  (EF Core, Repositories, Outbox Relay, Redis)        │
-└─────────────────────────────────────────────────────────────────────┘
-```
+## What's different on .NET 8
 
-### MediatR Pipeline (per request)
-
-```
-Request → LoggingBehaviour → ValidationBehaviour → TransactionBehaviour → Handler
-```
+- Targets the **.NET 8.0 SDK** (LTS) instead of .NET 10.
 
 ---
 
@@ -142,28 +126,6 @@ EnterpriseKit/
 
 ---
 
-## 📬 Transactional Outbox Pattern
-
-Domain events are **never published inline**. The flow is:
-
-```
-Command Handler
-  → mutates aggregate (raises domain event)
-  → SaveChangesAsync()
-       → OutboxExtensions.DispatchDomainEventsToOutbox()
-            → serializes events → INSERT into outbox_messages
-            → all inside ONE transaction ✓
-
-OutboxRelayService (BackgroundService, polls every 5s)
-  → reads unprocessed outbox rows
-  → deserializes → IPublisher.Publish()
-  → marks row as processed
-```
-
-This guarantees **at-least-once delivery**. Event handlers must be idempotent.
-
----
-
 ## 🔐 Authentication
 
 The API uses **JWT Bearer** authentication. Configure your identity provider in `appsettings.json`:
@@ -178,26 +140,6 @@ The API uses **JWT Bearer** authentication. Configure your identity provider in 
 ```
 
 For local development without an identity server, you can disable auth by removing `[Authorize]` from controllers or using a local JWT tool.
-
----
-
-## 🛠️ Adding a New Feature
-
-Follow this checklist for any new bounded-context feature:
-
-```
-1. Domain:       Add Entity/AggregateRoot + Value Objects + Domain Events
-2. Domain:       Add IRepository interface
-3. Application:  Add Command/Query records
-4. Application:  Add FluentValidation validator
-5. Application:  Add IRequestHandler<> handler
-6. Application:  Add INotificationHandler<> for domain events
-7. Infrastructure: Add EF IEntityTypeConfiguration<>
-8. Infrastructure: Add concrete Repository implementation
-9. Infrastructure: Register in InfrastructureServiceExtensions
-10. HttpApi:     Add Controller action → mediator.Send(command)
-11. Tests:       Domain unit tests, validator tests, handler tests
-```
 
 ---
 
