@@ -16,6 +16,7 @@
 - 🔐 **ABP Framework** — same multi-tenancy, identity, OpenIddict OIDC setup
 - 📊 **Serilog** — same structured JSON logging
 - 🐘 **PostgreSQL** + **Redis** + **MailHog** via the same Docker Compose stack
+- 💼 **Paid support tier** — same offering, described once in [v2's README](https://github.com/qmmughal/enterprise-starter-kit-v2#-support--consulting)
 
 Full write-up of all of the above, including the architecture diagram and the step-by-step "adding a new feature" checklist: **[read it in the v2 README →](https://github.com/qmmughal/enterprise-starter-kit-v2#readme)**
 
