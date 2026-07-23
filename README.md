@@ -1,8 +1,10 @@
-# 🏗️ EnterpriseKit — .NET Enterprise Starter Kit
+# 🏗️ EnterpriseKit — .NET 8 Enterprise Starter Kit
 
 [![CI](https://github.com/qmmughal/enterprise-starter-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/qmmughal/enterprise-starter-kit/actions/workflows/ci.yml)
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+> **.NET 8 LTS track.** For new greenfield work on **.NET 10**, prefer [enterprise-starter-kit-v2](https://github.com/qmmughal/enterprise-starter-kit-v2).
 
 A **production-grade, open-source Enterprise Starter Kit** combining:
 - 🧱 **Clean Architecture** — strict separation of concerns across 4 layers
@@ -50,7 +52,7 @@ Request → LoggingBehaviour → ValidationBehaviour → TransactionBehaviour �
 
 ```bash
 git clone https://github.com/qmmughal/enterprise-starter-kit.git
-cd enterprise-kit
+cd enterprise-starter-kit
 
 docker compose up -d
 ```
